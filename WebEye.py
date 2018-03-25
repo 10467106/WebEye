@@ -16,6 +16,7 @@ import re
 import time
 import optparse
 import urlparse
+from publicsuffixlist import PublicSuffixList
 
 sys.setrecursionlimit(10000)
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -130,8 +131,10 @@ class WebEye(Greenlet):
                 # print e
                 pass
 
-            if re.match("^www\.",domain):
-                domain = domain.strip("www.") 
+#            if re.match("^www\.",domain):
+#                 domain = domain.strip("www.") 
+            psl = PublicSuffixList()
+            domain = psl.suffix(domain)
             who = pythonwhois.get_whois(domain)
 
             # get whois
